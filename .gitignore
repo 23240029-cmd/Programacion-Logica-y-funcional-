@@ -1,0 +1,16 @@
+﻿# Entorno virtual de Python
+.venv/
+venv/
+env/
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+
+# IDEs
+.vscode/
+.idea/
+
+# SWI-Prolog y temporales
+*~
+*.swipl
