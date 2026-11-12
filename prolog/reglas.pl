@@ -41,6 +41,7 @@ receta_rapida(Platillo, MinutosMax) :-
 
 % Regla 1: Platillo apto para personas que no comen picante o comen muy poco,
 % Con un tiempo de preparación máximo
+
 opcion_suave_y_rapida(Platillo, TiempoMax) :-
     picante(Platillo, bajo),
     tiempo_preparacion(Platillo, Tiempo),
