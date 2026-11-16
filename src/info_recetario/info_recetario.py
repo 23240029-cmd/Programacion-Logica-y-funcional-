@@ -9,16 +9,13 @@ class InformacionRecetario:
     def __init__(self, conector: PrologConector):
         self.conector = conector
 
-    def obtener_detalle_receta(self): 
-        recetas = self.conector.hacer_consulta("detalle_receta(Platillo, Tipo, Region, Picante, Tiempo, Ingrediente)")
-        return agrupar_recetas_dict(recetas)
-
     def obtener_detalle_receta_por_nombre(self, nombre: str):
         """
         Obtiene el detalle de una receta específica por su nombre.
         """
         # Nota: Usa 'detalle_receta' si no creaste la regla 'detalle_receta_por_nombre' en Prolog
         recetas = self.conector.hacer_consulta(f"detalle_receta({formato_busqueda_receta(nombre)}, Tipo, Region, Picante, Tiempo, Ingredientes)")
+
         return agrupar_receta_unica_dict(recetas)
 
     def receta_por_tiempo(self, tiempo: int):
@@ -26,6 +23,7 @@ class InformacionRecetario:
         Usada para filtrar platillos menores o iguales a un tiempo máximo.
         """
         recetas = self.conector.hacer_consulta(f"receta_rapida(Platillo, {tiempo})")
+
         return recetas
 
     def receta_por_region(self, region: str): 
@@ -33,18 +31,55 @@ class InformacionRecetario:
         Usada para obtener las recetas especificadas dada una región determinada.
         """
         recetas = self.conector.hacer_consulta(f"platillo_de_region(Platillo, {region})")
-        return recetas
 
-    def busqueda_receta_por_nombre(self, nombre_platillo: str):
-        """
-        Verifica si existe una receta dado su nombre.
-        """
-        receta = self.conector.hacer_consulta(f"platillo({formato_busqueda_receta(nombre_platillo)}, _, _)")
-        return receta
+        return recetas
 
     def traer_platillos_por_nivel_de_picor(self, picor: str):
         if picor not in NIVEL_DE_PICOR:
             return []
 
         recetas = self.conector.hacer_consulta(f"picante(Platillo, {picor})")
-        return recetas  # <-- Faltaba este return
+        return recetas
+
+    def obtener_detalle_receta(self): 
+        """
+        Obtiene todos el detalle de las recetas disponibles en el recetario
+        """
+        recetas = self.conector.hacer_consulta("detalle_receta(Platillo, Tipo, Region, Picante, Tiempo, Ingrediente)")
+    
+        return agrupar_recetas_dict(recetas)
+
+    def filtro_por_tiempo(self, tiempo):
+        """
+        Filtra las recetas por tiempo máximo (en minutos). y con su detalle completo.
+        """
+        recetas_tiempo = self.receta_por_tiempo(tiempo)
+
+        for receta_tiempo in recetas_tiempo:
+            nombre_receta = receta_tiempo['Platillo']
+            detalle_receta = self.obtener_detalle_receta_por_nombre(nombre_receta)
+            
+            if detalle_receta:
+                yield detalle_receta
+
+    def filtro_por_region(self, region):
+        recetas_region = self.receta_por_region(region)
+
+        for receta_region in recetas_region:
+            nombre_receta = receta_region['Platillo']
+            detalle_receta = self.obtener_detalle_receta_por_nombre(nombre_receta)
+            
+            if detalle_receta:
+                yield detalle_receta
+
+    def filtro_por_picor(self, picor):
+        recetas_picor = self.traer_platillos_por_nivel_de_picor(picor)
+
+        for receta_picor in recetas_picor:
+            nombre_receta = receta_picor['Platillo']
+            detalle_receta = self.obtener_detalle_receta_por_nombre(nombre_receta)
+            
+            if detalle_receta:
+                yield detalle_receta
+
+    
