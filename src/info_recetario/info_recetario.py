@@ -82,4 +82,25 @@ class InformacionRecetario:
             if detalle_receta:
                 yield detalle_receta
 
-    
+    def filtro_suave_y_rapido(self, tiempo: int):
+        """
+        Consulta la regla opcion_suave_y_rapida de Prolog (Picante bajo + Tiempo <= max).
+        """
+        recetas = self.conector.hacer_consulta(f"opcion_suave_y_rapida(Platillo, {tiempo})")
+        # Aquí reutilizas su patrón N+1 (poco eficiente, pero respeta su arquitectura)
+        for receta in recetas:
+            nombre = receta['Platillo']
+            detalle = self.obtener_detalle_receta_por_nombre(nombre)
+            if detalle:
+                yield detalle
+
+    def filtro_alergias(self, ingrediente_prohibido: str):
+        """
+        Consulta la regla platillo_sin_ingrediente de Prolog.
+        """
+        recetas = self.conector.hacer_consulta(f"platillo_sin_ingrediente(Platillo, {ingrediente_prohibido})")
+        for receta in recetas:
+            nombre = receta['Platillo']
+            detalle = self.obtener_detalle_receta_por_nombre(nombre)
+            if detalle:
+                yield detalle
