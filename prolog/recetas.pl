@@ -1,6 +1,6 @@
 % Delgado Alcantar Emilio.
 % Valenzuela Hurtado Ana Guadalupe.
-% Sepulveda Becerra Frida.
+% Sepulveda Becerra Frida Paulina.
 % Cervarntes Guerrero Eduardo Agustin.
 %
 % ====================================================================
@@ -344,3 +344,4 @@ tiempo_preparacion(cochinita_pibil, 240).
 tiempo_preparacion(birria, 240).
 
 tiempo_preparacion(zacahuil, 600).
+
