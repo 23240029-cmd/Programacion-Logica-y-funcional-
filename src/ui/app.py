@@ -1,5 +1,7 @@
 import sys
 import os
+from pathlib import Path
+from PIL import Image
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -17,7 +19,7 @@ class VentanaDetalles(ctk.CTkToplevel):
         self.title(f"Detalles: {nombre_limpio}")
         self.geometry("420x480")
         self.configure(fg_color="#1e212b")
-        self.attributes("-topmost", True) # Mantiene la ventana al frente
+        self.attributes("-topmost", True)
 
         ctk.CTkLabel(
             self, text=nombre_limpio, font=("Arial", 22, "bold"), text_color="white"
@@ -59,20 +61,27 @@ class TarjetaReceta(ctk.CTkFrame):
     def __init__(self, master, receta, comando_click=None, **kwargs):
         super().__init__(master, fg_color="#282c37", border_color="#4a4d59", border_width=1, corner_radius=15, **kwargs)
 
-        # Region
-        self.image_frame = ctk.CTkFrame(self, fg_color="#3b3f4e", height=90, corner_radius=15)
+        # 1. Contenedor superior de la imagen
+        self.image_frame = ctk.CTkFrame(self, fg_color="#3b3f4e", height=130, corner_radius=15)
         self.image_frame.pack(fill="x", padx=2, pady=2)
         self.image_frame.pack_propagate(False)
 
+        # Cargar la imagen dinámicamente desde assets/recetas/
+        img_ctk = self.cargar_imagen_platillo(receta["Platillo"])
+        if img_ctk:
+            self.lbl_imagen = ctk.CTkLabel(self.image_frame, text="", image=img_ctk)
+            self.lbl_imagen.place(relx=0.5, rely=0.5, anchor="center")
+
+        # Etiqueta flotante de la Región encima de la imagen
         self.lbl_region = ctk.CTkLabel(
             self.image_frame,
             text=str(receta["Region"]).replace('_', ' ').title(),
             fg_color="#1e212b", text_color="white",
             corner_radius=10, font=("Arial", 11, "bold"), padx=10, pady=2
         )
-        self.lbl_region.pack(anchor="ne", padx=10, pady=10)
+        self.lbl_region.place(relx=0.95, rely=0.12, anchor="ne")
 
-        # Contenido
+        # 2. Contenido (Textos y botón)
         self.content_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.content_frame.pack(fill="both", expand=True, padx=15, pady=15)
 
@@ -90,7 +99,7 @@ class TarjetaReceta(ctk.CTkFrame):
         )
         self.lbl_tipo.pack(fill="x", pady=(2, 10))
 
-        # Tiempo y Picante
+        # 3. Tiempo y Picante
         self.stats_frame = ctk.CTkFrame(self.content_frame, fg_color="transparent")
         self.stats_frame.pack(fill="x", pady=(0, 15))
 
@@ -102,7 +111,7 @@ class TarjetaReceta(ctk.CTkFrame):
             self.stats_frame, text=f"{str(receta['Picante']).title()}", text_color="#d1d5db", font=("Arial", 12, "bold")
         ).pack(side="right")
 
-        # Boton Detalles
+        # 4. Botón Detalles
         self.btn_detalles = ctk.CTkButton(
             self.content_frame,
             text="Ver Detalles →",
@@ -111,6 +120,25 @@ class TarjetaReceta(ctk.CTkFrame):
             command=comando_click
         )
         self.btn_detalles.pack(fill="x", side="bottom")
+
+    def cargar_imagen_platillo(self, nombre_platillo):
+        ruta_assets = Path(__file__).resolve().parents[2] / "assets" / "recetas"
+        nombre_limpio = str(nombre_platillo).strip().lower()
+
+        posibles = [
+            ruta_assets / f"{nombre_limpio}.jpg",
+            ruta_assets / f"{nombre_limpio}.jpeg",
+            ruta_assets / f"{nombre_limpio}.png",
+            ruta_assets / "default.jpg",
+            ruta_assets / "default.jpeg",
+            ruta_assets / "default.png"
+        ]
+
+        for ruta in posibles:
+            if ruta.exists():
+                imagen_pil = Image.open(ruta)
+                return ctk.CTkImage(light_image=imagen_pil, dark_image=imagen_pil, size=(280, 130))
+        return None
 
 
 # ====================================================================
@@ -140,7 +168,7 @@ class App(ctk.CTk):
             self.panel_lateral, text="Recetario Experto", font=("Arial", 20, "bold"), text_color="white"
         ).pack(pady=(20, 10), padx=20, anchor="w")
 
-        # Buscador en tiempo real dentro de la despensa
+        # Buscador de la despensa
         self.entry_buscar_ingrediente = ctk.CTkEntry(
             self.panel_lateral, placeholder_text="Filtrar ingrediente...", fg_color="#1e212b", border_color="#4a4d59"
         )
