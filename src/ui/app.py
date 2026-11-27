@@ -1,3 +1,11 @@
+"""
+% Delgado Alcantar Emilio.
+% Valenzuela Hurtado Ana Guadalupe.
+% Sepulveda Becerra Frida Paulina.
+% Cervarntes Guerrero Eduardo Agustin.
+Interfaz grafica para recetario
+"""
+
 import sys
 import os
 from pathlib import Path

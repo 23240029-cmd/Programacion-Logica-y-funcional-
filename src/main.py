@@ -1,3 +1,11 @@
+"""
+% Delgado Alcantar Emilio.
+% Valenzuela Hurtado Ana Guadalupe.
+% Sepulveda Becerra Frida Paulina.
+% Cervarntes Guerrero Eduardo Agustin.
+Clase main
+"""
+
 import pprint
 from info_recetario import InformacionRecetario
 from conector_prolog import PrologConector

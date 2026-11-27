@@ -1,3 +1,10 @@
+"""
+% Delgado Alcantar Emilio.
+% Valenzuela Hurtado Ana Guadalupe.
+% Sepulveda Becerra Frida Paulina.
+% Cervarntes Guerrero Eduardo Agustin.
+"""
+
 def agrupar_recetas_dict(resultados_prolog: list[dict]) -> dict:
         recetas = {}
 

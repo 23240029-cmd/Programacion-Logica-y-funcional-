@@ -1,3 +1,10 @@
+"""
+% Delgado Alcantar Emilio.
+% Valenzuela Hurtado Ana Guadalupe.
+% Sepulveda Becerra Frida Paulina.
+% Cervarntes Guerrero Eduardo Agustin.
+"""
+
 class FiltrosProlog:
     def __init__(self, informacion_recetario):
         self.informacion_recetario = informacion_recetario

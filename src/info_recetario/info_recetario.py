@@ -1,3 +1,10 @@
+"""
+% Delgado Alcantar Emilio.
+% Valenzuela Hurtado Ana Guadalupe.
+% Sepulveda Becerra Frida Paulina.
+% Cervarntes Guerrero Eduardo Agustin.
+"""
+
 from conector_prolog import PrologConector
 from util.formato_prolog import agrupar_recetas_dict, formato_busqueda_receta, agrupar_receta_unica_dict    
 from util.constantes import NIVEL_DE_PICOR

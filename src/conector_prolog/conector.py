@@ -1,4 +1,8 @@
 """
+% Delgado Alcantar Emilio.
+% Valenzuela Hurtado Ana Guadalupe.
+% Sepulveda Becerra Frida Paulina.
+% Cervarntes Guerrero Eduardo Agustin.
 Modulo encargado de crear el objeto que representa el encapusulamiento
 de python con prologo y la exposicon de metodos de prolog
 
