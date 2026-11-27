@@ -1,3 +1,7 @@
+% Delgado Alcantar Emilio.
+% Valenzuela Hurtado Ana Guadalupe.
+% Sepulveda Becerra Frida Paulina.
+% Cervarntes Guerrero Eduardo Agustin.
 % ====================================================================
 % CONSULTA DE HECHOS DESDE RECETAS.PL
 :- consult('recetas.pl').
